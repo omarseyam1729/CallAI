@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/api";
@@ -15,8 +15,14 @@ export default function CallExplorer() {
   const [q, setQ] = useState("");
   const [total, setTotal] = useState(0);
 
-  // Fetch call data from API
-  const fetchCalls = async () => {
+  // advanced filters
+  const [filters, setFilters] = useState({
+    agent_name: null,
+    date_from: null,
+    date_to: null,
+  });
+
+  const fetchCalls = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
@@ -24,37 +30,45 @@ export default function CallExplorer() {
         per_page: perPage,
         order,
         ...(q && { q }),
+        ...(filters.agent_name && { agent_name: filters.agent_name }),
+        ...(filters.date_from && { date_from: filters.date_from }),
+        ...(filters.date_to && { date_to: filters.date_to }),
       });
+
       const res = await fetch(api(`/calls?${params.toString()}`), {
         headers: { accept: "application/json" },
       });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+
       setCalls(data.items || []);
       setTotal(data.total || 0);
     } catch (err) {
-      console.error("Error fetching calls:", err);
+      console.error(" Error fetching calls:", err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
+  }, [page, perPage, order, q, filters]);
 
-  // Fetch on mount and when pagination/sorting changes
+  // initial + reactive fetch
   useEffect(() => {
     fetchCalls();
-  }, [page, perPage, order]);
+  }, [fetchCalls]);
 
   const totalPages = Math.ceil(total / perPage);
 
   return (
-    <div className="p-6 w-full">
+    <div className="w-full p-6 space-y-4">
       <Card className="border rounded-2xl shadow-sm">
-        <CardHeader>
+        <CardHeader className="pb-2">
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Call Explorer
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
-          {/* Top search + order controls */}
+        <CardContent className="space-y-6">
+          {/* Filters */}
           <CallFilters
             q={q}
             setQ={setQ}
@@ -62,16 +76,17 @@ export default function CallExplorer() {
             setOrder={setOrder}
             fetchCalls={fetchCalls}
             loading={loading}
+            setExtraFilters={setFilters}
           />
 
-          {/* Data table */}
+          {/* Table */}
           {loading ? (
-            <Skeleton className="h-40 w-full rounded-lg mt-4" />
+            <Skeleton className="h-64 w-full rounded-lg" />
           ) : (
             <CallTable calls={calls} />
           )}
 
-          {/* Pagination controls */}
+          {/* Pagination */}
           <PaginationFooter
             page={page}
             setPage={setPage}
