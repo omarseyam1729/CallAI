@@ -7,7 +7,9 @@ from app.api import api
 app = api.app  
 
 origins = [
-    "http://localhost:5173",  # Vite/React frontend
+    "http://localhost:5173",
+    "http://localhost:5174",
+        # Vite/React frontend
     # add more origins as needed
 ]
 
