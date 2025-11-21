@@ -27,9 +27,9 @@ dist/
 build/
 *.spec
 
-# --- Media uploads (keep folder, ignore contents) ---
-media/*
-!media/.gitkeep
+# --- Media uploads (ignore all contents recursively) ---
+backend/media/**
+!backend/media/.gitkeep
 
 # --- Local data ---
 data/

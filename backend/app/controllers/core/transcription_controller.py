@@ -398,6 +398,50 @@ def get_speaker_transcript_by_call(call_id: str) -> dict[str, str]:
         db.close()
 
 
+def get_segments_by_call(call_id: str) -> list[dict]:
+    """
+    Returns a list of segments with timestamps, speaker, and text for a given call_id.
+    Segments are sorted by their start time across all chunks.
+    """
+    db = SessionLocal()
+    try:
+        call = (
+            db.query(Call)
+            .filter(Call.id == call_id)
+            .options(
+                joinedload(Call.chunks).joinedload(AudioChunk.segments)
+            )
+            .first()
+        )
+
+        if not call:
+            raise ValueError(f"Call with ID {call_id} not found.")
+
+        segments_list = []
+        
+        # Iterate through sorted chunks and their segments
+        for chunk in sorted(call.chunks, key=lambda c: c.start_time):
+            chunk_offset = chunk.start_time  # offset for absolute time
+            for seg in sorted(chunk.segments, key=lambda s: s.start):
+                segments_list.append({
+                    "id": seg.id,
+                    "chunk_id": chunk.id,
+                    "speaker": seg.speaker,
+                    "start": chunk_offset + seg.start,  # absolute time
+                    "end": chunk_offset + seg.end,  # absolute time
+                    "text": seg.text,
+                    "sentiment_label": seg.sentiment_label,
+                    "sentiment_confidence": seg.sentiment_confidence,
+                    "emotion_label": seg.emotion_label,
+                    "emotion_confidence": seg.emotion_confidence,
+                })
+
+        return segments_list
+
+    finally:
+        db.close()
+
+
 
 if __name__ == "__main__":
     print("hello")

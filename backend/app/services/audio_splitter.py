@@ -67,6 +67,45 @@ def split_audio_ffmpeg(input_path: str, chunk_duration=30, overlap=5) -> list[st
     return chunk_paths
 
 
+def extract_audio_snippet(chunk_path: str, start: float, end: float, output_path: str = None) -> str:
+    """
+    Extract an audio snippet from a chunk file using FFmpeg.
+    
+    Args:
+        chunk_path: Path to the audio chunk file
+        start: Start time in seconds (relative to chunk)
+        end: End time in seconds (relative to chunk)
+        output_path: Optional output path. If None, generates a temp file.
+    
+    Returns:
+        Path to the extracted audio snippet
+    """
+    from pathlib import Path
+    import tempfile
+    
+    if output_path is None:
+        # Create temp file
+        temp_dir = Path(tempfile.gettempdir())
+        output_path = str(temp_dir / f"segment_{uuid.uuid4().hex}.wav")
+    else:
+        os.makedirs(Path(output_path).parent, exist_ok=True)
+    
+    duration = end - start
+    
+    subprocess.run([
+        "ffmpeg", "-y",
+        "-ss", str(start),
+        "-t", str(duration),
+        "-i", chunk_path,
+        "-acodec", "pcm_s16le",  # WAV format
+        "-ar", "16000",          # Standard rate
+        "-ac", "1",              # mono channel
+        str(output_path)
+    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+    
+    return output_path
+
+
 if __name__ == "__main__":
     chunks = split_audio_ffmpeg("example.mp3")
     print("Generated chunks:", chunks)

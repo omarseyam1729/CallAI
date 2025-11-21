@@ -18,6 +18,7 @@ from contextlib import asynccontextmanager
 from app.core.database import Base, engine
 from app import models  # ensure models are registered
 from app.api import search
+from app.api import chat
 logging.basicConfig(level=logging.INFO)
 
 
@@ -33,3 +34,4 @@ app.include_router(pipeline.router, prefix="/pipeline", tags=["Pipeline"])
 app.include_router(calls.router, prefix="/calls", tags=["Calls"])
 app.include_router(metrics.router, prefix="/metrics", tags=["Metrics"])
 app.include_router(agent.router, prefix="/agents", tags=["Agents"])
+app.include_router(chat.router, prefix="/chat", tags=["Chat"])
