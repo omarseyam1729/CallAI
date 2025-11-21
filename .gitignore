@@ -35,3 +35,9 @@ backend/media/**
 data/
 tmp/
 logs/
+
+# --- FAISS index files ---
+*.index
+*.meta.json
+faiss.index
+faiss.meta.json
