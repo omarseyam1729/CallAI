@@ -596,13 +596,89 @@ callAI/
 
 ## License
 
-[Add your license information here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-[Add contribution guidelines here]
+We welcome contributions to CallAI! Here's how you can help:
+
+### Getting Started
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/callAI.git
+   cd callAI
+   ```
+3. **Create a branch** for your feature or bugfix:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+### Development Workflow
+
+1. Make your changes in your feature branch
+2. **Test your changes** thoroughly
+3. **Update documentation** if needed
+4. **Commit your changes** with clear, descriptive messages:
+   ```bash
+   git commit -m "Add feature: description of changes"
+   ```
+5. **Push to your fork**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+6. **Open a Pull Request** on GitHub with a clear description of your changes
+
+### Code Style
+
+- **Backend**: Follow PEP 8 Python style guidelines
+- **Frontend**: Follow ESLint configuration and TypeScript best practices
+- **Commits**: Use clear, descriptive commit messages
+- **Documentation**: Update README and code comments as needed
+
+### Reporting Issues
+
+If you find a bug or have a feature request:
+1. Check if the issue already exists
+2. Create a new issue with:
+   - Clear description of the problem/feature
+   - Steps to reproduce (for bugs)
+   - Expected vs actual behavior
+   - Environment details (OS, Python/Node versions)
+
+### Pull Request Guidelines
+
+- Keep PRs focused on a single feature or bugfix
+- Include tests if applicable
+- Update documentation as needed
+- Ensure all tests pass
+- Request review from maintainers
+
+## Contributors
+
+We would like to thank the following contributors for their valuable contributions to CallAI:
+
+- **Seyam Omar** - Project maintainer and lead developer
+- **Nayyar Zaidi** - Core contributor
+
+Thank you to everyone who has contributed to making CallAI better!
 
 ## Support
 
-[Add support information here]
+### Getting Help
+
+- **Documentation**: Check this README and inline code documentation
+- **Issues**: Open an issue on [GitHub Issues](https://github.com/omarseyam1729/callAI/issues) for bugs or feature requests
+- **Discussions**: Use GitHub Discussions for questions and general discussion
+
+### Community
+
+- **GitHub Repository**: [https://github.com/omarseyam1729/callAI](https://github.com/omarseyam1729/callAI)
+- **Report Bugs**: [GitHub Issues](https://github.com/omarseyam1729/callAI/issues)
+- **Feature Requests**: [GitHub Issues](https://github.com/omarseyam1729/callAI/issues)
+
+### Commercial Support
+
+For commercial support or enterprise inquiries, please contact the maintainers through GitHub.
 
